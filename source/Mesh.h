@@ -1,0 +1,35 @@
+#pragma once
+#include "Effect.h"
+
+namespace dae
+{
+	struct Vertex
+	{
+		Vector3 position{};
+		ColorRGB color{};
+	};
+
+	class Mesh
+	{
+	public:
+		Mesh(ID3D11Device* pDevice, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
+		~Mesh();
+
+		Mesh(const Mesh& other) = delete;
+		Mesh& operator=(const Mesh& other) = delete;
+
+		Mesh(Mesh&& other) = delete;
+		Mesh& operator=(Mesh&& other) = delete;
+
+		void Render(ID3D11DeviceContext* pDeviceContext, Matrix viewProjectionMatrix);
+
+	private:
+		Effect* m_pEffect;
+		ID3DX11EffectTechnique* m_pTechnique;
+		ID3D11InputLayout* m_pInputLayout;
+		ID3D11Buffer* m_pVertexBuffer;
+		ID3D11Buffer* m_pIndexBuffer;
+
+		uint32_t m_NumIndices;
+	};
+}
