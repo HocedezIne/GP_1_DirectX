@@ -1,7 +1,12 @@
 #include "pch.h"
 #include "Mesh.h"
 
-dae::Mesh::Mesh(ID3D11Device* pDevice, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
+dae::Mesh::Mesh(ID3D11Device* pDevice, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices):
+	m_NumIndices{},
+	m_pIndexBuffer{},
+	m_pInputLayout{},
+	m_pVertexBuffer{},
+	m_pTechnique{}
 {
 	m_pEffect = new Effect(pDevice, std::wstring(L"Resources/PosCol3D.fx"));
 
@@ -21,7 +26,7 @@ dae::Mesh::Mesh(ID3D11Device* pDevice, const std::vector<Vertex>& vertices, cons
 		return;
 
 	//Create Vertex Layout
-	static constexpr uint32_t numElements{ 2 };
+	static constexpr uint32_t numElements{ 3 };
 	D3D11_INPUT_ELEMENT_DESC vertextDesc[numElements]{};
 
 	vertextDesc[0].SemanticName = "POSITION";
@@ -33,6 +38,11 @@ dae::Mesh::Mesh(ID3D11Device* pDevice, const std::vector<Vertex>& vertices, cons
 	vertextDesc[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	vertextDesc[1].AlignedByteOffset = 12;
 	vertextDesc[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+
+	vertextDesc[2].SemanticName = "TEXCOORD";
+	vertextDesc[2].Format = DXGI_FORMAT_R32G32_FLOAT;
+	vertextDesc[2].AlignedByteOffset = 24;
+	vertextDesc[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 
 	m_pTechnique = m_pEffect->GetTechnique();
 
@@ -63,7 +73,7 @@ dae::Mesh::~Mesh()
 {
 	m_pIndexBuffer->Release();
 	m_pVertexBuffer->Release();
-	m_pInputLayout->Release();
+	if(m_pInputLayout != nullptr) m_pInputLayout->Release();
 	m_pTechnique->Release();
 
 	delete m_pEffect;

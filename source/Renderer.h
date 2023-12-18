@@ -21,6 +21,8 @@ namespace dae
 		void Update(const Timer* pTimer);
 		void Render() const;
 
+		void CycleSamplerStates() { m_pMesh->CycleSamplerStates(); };
+
 	private:
 		SDL_Window* m_pWindow{};
 
@@ -30,6 +32,7 @@ namespace dae
 		bool m_IsInitialized{ false };
 
 		Mesh* m_pMesh;
+		Texture* m_pTexture;
 		Camera* m_pCamera;
 
 		//DIRECTX

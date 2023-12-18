@@ -24,29 +24,42 @@ namespace dae {
 		// Create some data for our mesh
 		std::vector<Vertex> vertices
 		{
-			{ {0.0f, 0.5f, 0.5f}, {1.0f, 0.0f, 0.0f} },
-			{ {0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 1.0f} },
-			{ {-0.5f, -0.5f, 0.5f}, {0.0f, 1.0f, 0.0f} },
-			{ {}, {}}
+			{{-3.f, 3.f, -2.f}		,{1.f, 1.f, 1.f},	{0.0f, 0.0f}},
+			{{0.f, 3.f, -2.f}		,{1.f, 1.f, 1.f},	{0.5f, 0.0f}},
+			{{3.f, 3.0f, -2.f}		,{1.f, 1.f, 1.f},	{1.0f, 0.f}},
+			{{-3.f, 0.f, -2.f}		,{1.f, 1.f, 1.f},	{0.f, 0.5f}},
+			{{0.f, 0.f, -2.f}		,{1.f, 1.f, 1.f},	{0.5f, 0.5f}},
+			{{3.f, 0.f, -2.f}		,{1.f, 1.f, 1.f},	{1.0f, 0.5f}},
+			{{-3.f, -3.f, -2.f}		,{1.f, 1.f, 1.f},	{0.0f, 1.0f}},
+			{{0.f, -3.f, -2.f}		,{1.f, 1.f, 1.f},	{0.5f, 1.0f}},
+			{{3.f, -3.f, -2.f}		,{1.f, 1.f, 1.f},	{1.0f, 1.0f}}
 		};
 
-		std::vector<uint32_t> indices{ 0,1,2 };
+		std::vector<uint32_t> indices{ 
+			3,0,1,  1,4,3,  4,1,2,
+			2,5,4,  6,3,4,  4,7,6,
+			7,4,5,  5,8,7, 
+		};
 
+		m_pTexture = Texture::LoadFromFile(m_pDevice, "Resources/uv_grid_2.png");
 		m_pMesh = new Mesh(m_pDevice, vertices, indices);
+		m_pMesh->SetDiffuseMap(m_pTexture);
 		m_pCamera = new Camera();
-		m_pCamera->Initialize((float)m_Width / (float)m_Height, 45.f, { 0.f,0.f,-2.f });
+		m_pCamera->Initialize((float)m_Width / (float)m_Height, 45.f, { 0.f,0.f,-10.f });
 	}
 
 	Renderer::~Renderer()
 	{
-		m_pRenderTargetView->Release();
-		m_pRenderTargetBuffer->Release();
-		m_pDepthStencilView->Release();
-		m_pDepthStencilBuffer->Release();
-		m_pSwapChain->Release();
-
 		if (m_pDeviceContext)
 		{
+			m_pRenderTargetView->Release();
+			m_pRenderTargetBuffer->Release();
+
+			m_pDepthStencilView->Release();
+			m_pDepthStencilBuffer->Release();
+
+			m_pSwapChain->Release();
+
 			m_pDeviceContext->ClearState();
 			m_pDeviceContext->Flush();
 			m_pDeviceContext->Release();
@@ -56,6 +69,9 @@ namespace dae {
 		
 		delete m_pMesh;
 		m_pMesh = nullptr;
+
+		delete m_pTexture;
+		m_pTexture = nullptr;
 
 		delete m_pCamera;
 		m_pCamera = nullptr;
