@@ -80,11 +80,11 @@ namespace dae
 		desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		desc.MaxAnisotropy = 1;
 
-		desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_POINT;
+		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 		HRESULT result = pDevice->CreateSamplerState(&desc, &m_pSamplerPoint);
 		if (FAILED(result)) return false;
 
-		desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		result = pDevice->CreateSamplerState(&desc, &m_pSamplerLinear);
 		if (FAILED(result)) return false;
 

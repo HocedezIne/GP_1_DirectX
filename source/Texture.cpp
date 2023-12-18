@@ -3,6 +3,11 @@
 
 namespace dae
 {
+	Texture::Texture() :
+		m_pTexture{},
+		m_pShaderResourceView{}
+	{}
+
 	Texture::~Texture()
 	{
 		if (m_pTexture != nullptr)

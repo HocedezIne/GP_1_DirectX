@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Renderer.h"
+#include "Utils.h"
 
 namespace dae {
 
@@ -22,7 +23,7 @@ namespace dae {
 		}
 
 		// Create some data for our mesh
-		std::vector<Vertex> vertices
+		/*std::vector<Vertex> vertices
 		{
 			{{-3.f, 3.f, -2.f}		,{1.f, 1.f, 1.f},	{0.0f, 0.0f}},
 			{{0.f, 3.f, -2.f}		,{1.f, 1.f, 1.f},	{0.5f, 0.0f}},
@@ -39,13 +40,18 @@ namespace dae {
 			3,0,1,  1,4,3,  4,1,2,
 			2,5,4,  6,3,4,  4,7,6,
 			7,4,5,  5,8,7, 
-		};
+		};*/
 
-		m_pTexture = Texture::LoadFromFile(m_pDevice, "Resources/uv_grid_2.png");
+		m_pTexture = Texture::LoadFromFile(m_pDevice, "Resources/vehicle_diffuse.png");
+
+		std::vector<Vertex> vertices;
+		std::vector<uint32_t> indices;
+		Utils::ParseOBJ("Resources/vehicle.obj", vertices, indices, false);
 		m_pMesh = new Mesh(m_pDevice, vertices, indices);
 		m_pMesh->SetDiffuseMap(m_pTexture);
+
 		m_pCamera = new Camera();
-		m_pCamera->Initialize((float)m_Width / (float)m_Height, 45.f, { 0.f,0.f,-10.f });
+		m_pCamera->Initialize((float)m_Width / (float)m_Height, 45.f, { 0.f,0.f,-50.f });
 	}
 
 	Renderer::~Renderer()
@@ -80,6 +86,9 @@ namespace dae {
 	void Renderer::Update(const Timer* pTimer)
 	{
 		m_pCamera->Update(pTimer);
+
+		Matrix rotation{ Matrix::CreateRotationY(90.f * TO_RADIANS * pTimer->GetElapsed()) };
+		
 	}
 
 

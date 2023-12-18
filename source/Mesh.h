@@ -6,7 +6,7 @@ namespace dae
 	struct Vertex
 	{
 		Vector3 position{};
-		ColorRGB color{};
+		ColorRGB color{1.f, 1.f, 1.f};
 		Vector2 uv{};
 	};
 

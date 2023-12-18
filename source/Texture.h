@@ -24,7 +24,7 @@ namespace dae
 		ID3D11ShaderResourceView* GetSRV() const { return m_pShaderResourceView; };
 
 	private:
-		Texture() = default;
+		Texture();
 
 		ID3D11Texture2D* m_pTexture{};
 		ID3D11ShaderResourceView* m_pShaderResourceView{};
